@@ -1,4 +1,66 @@
+TRUNCATE TABLE
+    business.project_cloud_accounts,
+    business.cloud_accounts,
+    business.company_projects;
 TRUNCATE TABLE focus.cost_usage;
+
+INSERT INTO business.company_projects (
+    project_id, project_name, business_unit, product_owner, environment,
+    lifecycle_status, start_date, end_date, tags
+) VALUES
+('orders-platform', 'Orders Platform Modernization', 'Commerce', 'platform-team', 'prod',
+ 'Active', '2025-01-15', NULL,
+ '{"cost_center":"finops","criticality":"tier-1"}'),
+('data-lakehouse', 'Customer Data Lakehouse', 'Data', 'data-platform', 'prod',
+ 'Active', '2025-03-01', NULL,
+ '{"cost_center":"finops","criticality":"tier-1"}'),
+('customer-api', 'Customer API Runtime', 'Product Engineering', 'app-team', 'prod',
+ 'Active', '2025-04-10', NULL,
+ '{"cost_center":"product","criticality":"tier-1"}'),
+('finance-mart', 'Finance Analytics Mart', 'Finance', 'analytics', 'prod',
+ 'Active', '2025-02-01', NULL,
+ '{"cost_center":"finance","criticality":"tier-2"}');
+
+INSERT INTO business.cloud_accounts (
+    cloud_account_key, service_provider_name, billing_account_id, billing_account_name,
+    sub_account_id, sub_account_name, account_type, environment, tags
+) VALUES
+('aws:ba-aws-001:prod-platform', 'AWS', 'ba-aws-001', 'Shared AWS Payer',
+ 'prod-platform', 'Production Platform', 'Project', 'prod',
+ '{"cloud":"aws","landing_zone":"platform"}'),
+('aws:ba-aws-001:data-platform', 'AWS', 'ba-aws-001', 'Shared AWS Payer',
+ 'data-platform', 'Data Platform', 'Project', 'prod',
+ '{"cloud":"aws","landing_zone":"data"}'),
+('azure:ba-azure-002:prod-apps', 'Microsoft', 'ba-azure-002', 'Azure Enterprise Agreement',
+ 'prod-apps', 'Production Apps', 'Subscription', 'prod',
+ '{"cloud":"azure","landing_zone":"apps"}'),
+('azure:ba-azure-002:prod-data', 'Microsoft', 'ba-azure-002', 'Azure Enterprise Agreement',
+ 'prod-data', 'Production Data', 'Subscription', 'prod',
+ '{"cloud":"azure","landing_zone":"data"}'),
+('gcp:ba-gcp-003:analytics-prd', 'Google Cloud', 'ba-gcp-003', 'GCP Billing Account',
+ 'analytics-prd', 'Analytics Production', 'Project', 'prod',
+ '{"cloud":"gcp","landing_zone":"analytics"}'),
+('gcp:ba-gcp-003:apps-prd', 'Google Cloud', 'ba-gcp-003', 'GCP Billing Account',
+ 'apps-prd', 'Applications Production', 'Project', 'prod',
+ '{"cloud":"gcp","landing_zone":"apps"}');
+
+INSERT INTO business.project_cloud_accounts (
+    project_id, cloud_account_key, allocation_weight, is_primary, relationship_note
+) VALUES
+('orders-platform', 'aws:ba-aws-001:prod-platform', 0.600000, true,
+ 'Primary order database and shared platform services on AWS.'),
+('orders-platform', 'azure:ba-azure-002:prod-data', 0.400000, false,
+ 'Managed PostgreSQL storage and reporting dependencies on Azure.'),
+('data-lakehouse', 'aws:ba-aws-001:data-platform', 0.500000, true,
+ 'Raw object storage and ingestion landing zone on AWS.'),
+('data-lakehouse', 'gcp:ba-gcp-003:analytics-prd', 0.500000, false,
+ 'BigQuery analytics warehouse on Google Cloud.'),
+('customer-api', 'azure:ba-azure-002:prod-apps', 0.700000, true,
+ 'Primary VM runtime for customer APIs on Azure.'),
+('customer-api', 'gcp:ba-gcp-003:apps-prd', 0.300000, false,
+ 'Cloud Run services for regional API workloads on Google Cloud.'),
+('finance-mart', 'gcp:ba-gcp-003:analytics-prd', 0.500000, true,
+ 'Single-cloud finance analytics mart on Google Cloud, sharing the analytics account.');
 
 INSERT INTO focus.cost_usage (
     "BillingAccountId", "BillingAccountName", "BillingAccountType", "BillingCurrency",

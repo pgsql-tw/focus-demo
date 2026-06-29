@@ -1,6 +1,6 @@
 ---
 name: focus-postgresql-demo
-description: Maintain this repository's complete FOCUS PostgreSQL standard data example. Use when changing the PostgreSQL schema, sample FOCUS cost and usage data, Python local tooling, requirements.txt, sample FinOps queries, validation checks, or project documentation for this FOCUS v1.4 showcase.
+description: Maintain this repository's complete FOCUS PostgreSQL standard data example. Use when changing the PostgreSQL schema, table/index/column comments, sample FOCUS cost and usage data, Python local tooling, requirements.txt, sample FinOps queries, validation checks, or project documentation for this FOCUS v1.4 showcase.
 ---
 
 # FOCUS PostgreSQL Standard Example
@@ -15,9 +15,10 @@ description: Maintain this repository's complete FOCUS PostgreSQL standard data 
 6. Treat complete FOCUS v1.4 Cost and Usage column coverage as the project goal. Keep `focus.cost_usage` aligned to the full 107 standard columns unless the user explicitly asks for a separate reduced teaching artifact.
 7. Keep non-standard helper fields out of the canonical `focus.cost_usage` table. If extension fields are required, use an `x_` prefix and document why they are outside the standard.
 8. Keep seed data readable while preserving the full standard schema. Populate representative columns for core FinOps demos and allow nullable standard columns to remain null when the example does not need them.
-9. Add or update `sql/query_*.sql` files when introducing new FinOps examples.
-10. Validate Python syntax with `python -m compileall scripts` after code changes.
-11. When schema or seed files change, verify the local PostgreSQL table has 107 columns and that sample seed/query files still execute.
+9. Add Chinese PostgreSQL comments for every schema object introduced or changed: `COMMENT ON TABLE`, `COMMENT ON COLUMN`, and `COMMENT ON INDEX`. Column comments must describe the data content and business meaning, not merely repeat the column name. Keep FOCUS column names in English inside the Chinese explanation only when referring to the standard term.
+10. Add or update `sql/query_*.sql` files when introducing new FinOps examples.
+11. Validate Python syntax with `python -m compileall scripts` after code changes.
+12. When schema or seed files change, verify the local PostgreSQL table has 107 columns and that sample seed/query files still execute.
 
 ## Project Map
 

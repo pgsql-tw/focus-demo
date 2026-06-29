@@ -14,10 +14,12 @@ Schema guidance:
 - Use `timestamptz` for billing and charge period boundaries.
 - Use `jsonb` for `"Tags"` so PostgreSQL can index and query allocation labels.
 - Prefix non-standard extension columns with `x_` only outside the canonical standard table or when the user explicitly asks for provider-specific extensions.
+- Add Chinese PostgreSQL metadata comments for every table, index, and column in schema files. Use `COMMENT ON TABLE`, `COMMENT ON INDEX`, and `COMMENT ON COLUMN` so comments are visible from database metadata tools. Column comments should explain the data content and business meaning, not just restate the column name.
 
 Validation guidance:
 
 - Verify `information_schema.columns` reports 107 columns for `focus.cost_usage`.
+- Verify table, index, and column comments are present in PostgreSQL metadata after applying `sql/01_schema.sql`.
 - Run `sql/02_seed_data.sql` after schema changes to keep the readable demo viable.
 - Run `sql/03_seed_daily_5_years.sql` when changes affect generated analytical data.
 - Keep query examples on FOCUS v1.4 names such as `"ServiceProviderName"` and `"HostProviderName"`.
