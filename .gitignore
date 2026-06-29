@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+.python-packages/
+pip-wheel-metadata/
+build/
+dist/
+*.egg-info/
+
+# Local database credentials.
+config/postgres.ini
+.env
+.env.*
+
+# Generated or local runtime outputs.
+outputs/
+*.log

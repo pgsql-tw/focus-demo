@@ -1,0 +1,4 @@
+interface:
+  display_name: "FOCUS PostgreSQL Demo"
+  short_description: "Maintain this FOCUS PostgreSQL showcase project."
+  default_prompt: "Use this skill when changing the FOCUS PostgreSQL demo project."
