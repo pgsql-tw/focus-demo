@@ -23,7 +23,7 @@ clouds AS (
             'gcp-prj', 'GCP Project', 'asia-east1', 'Taiwan'
         )
     ) AS cloud_def (
-        provider_name, publisher_name, billing_account_id, billing_account_name,
+        service_provider_name, host_provider_name, billing_account_id, billing_account_name,
         project_prefix, project_label, region_id, region_name
     )
 ),
@@ -119,7 +119,7 @@ service_catalog AS (
             'GB-Month', 760.000000, 0.020000, 0.023000
         )
     ) AS service_def (
-        provider_name, service_ordinal, service_category, service_name,
+        service_provider_name, service_ordinal, service_category, service_name,
         charge_description, resource_type, sku_id, sku_price_id,
         consumed_unit, base_quantity, contracted_unit_cost, list_unit_cost
     )
@@ -138,7 +138,7 @@ project_services AS (
         s.base_quantity,
         s.contracted_unit_cost,
         s.list_unit_cost,
-        CASE p.provider_name
+        CASE p.service_provider_name
             WHEN 'AWS' THEN format(
                 'arn:aws:focus:%s:111122223333:%s/%s-%s',
                 p.region_id,
@@ -170,7 +170,7 @@ project_services AS (
         ) AS resource_name
     FROM projects p
     JOIN service_catalog s
-        ON s.provider_name = p.provider_name
+        ON s.service_provider_name = p.service_provider_name
 ),
 daily_usage AS (
     SELECT
@@ -228,11 +228,11 @@ daily_usage AS (
 INSERT INTO focus.cost_usage (
     "BillingAccountId", "BillingAccountName", "BillingCurrency",
     "BillingPeriodStart", "BillingPeriodEnd", "ChargePeriodStart", "ChargePeriodEnd",
-    "ChargeCategory", "ChargeClass", "ChargeDescription", "ChargeFrequency", "ChargeSubcategory",
+    "ChargeCategory", "ChargeClass", "ChargeDescription", "ChargeFrequency", "ServiceSubcategory",
     "ConsumedQuantity", "ConsumedUnit", "ContractedCost", "EffectiveCost", "ListCost",
-    "PricingQuantity", "PricingUnit", "ProviderName", "PublisherName", "RegionId", "RegionName",
+    "PricingQuantity", "PricingUnit", "ServiceProviderName", "HostProviderName", "RegionId", "RegionName",
     "ResourceId", "ResourceName", "ResourceType", "ServiceCategory", "ServiceName",
-    "SkuId", "SkuPriceId", "SubAccountId", "SubAccountName", "Tags", "x_DemoEnvironment"
+    "SkuId", "SkuPriceId", "SubAccountId", "SubAccountName", "Tags"
 )
 SELECT
     billing_account_id,
@@ -254,8 +254,8 @@ SELECT
     round((base_quantity * usage_factor * list_unit_cost)::numeric, 6),
     round((base_quantity * usage_factor)::numeric, 6),
     consumed_unit,
-    provider_name,
-    publisher_name,
+    service_provider_name,
+    host_provider_name,
     region_id,
     region_name,
     resource_id,
@@ -274,7 +274,6 @@ SELECT
         'project', project_id,
         'cost_center', cost_center,
         'workload_pattern', workload_pattern
-    ),
-    env
+    )
 FROM daily_usage
-ORDER BY charge_day, provider_name, project_id, service_ordinal;
+ORDER BY charge_day, service_provider_name, project_id, service_ordinal;

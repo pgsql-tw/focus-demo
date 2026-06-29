@@ -12,6 +12,7 @@
 - 在 `sql/01_schema.sql` 加上 `focus.cost_usage` 的中文 table comment。
 - 在 `sql/01_schema.sql` 加上所有欄位的中文 column comment。
 - 新增 `CHANGELOG.md`，記錄使用者請 Codex 完成的專案變更。
+- 新增 FOCUS 官方 MCP server：`https://focus.finops.org/wp-json/focus/v1/mcp`。
 
 ### Changed
 
