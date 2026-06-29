@@ -1,6 +1,6 @@
 SELECT
     date_trunc('day', "ChargePeriodStart")::date AS charge_day,
-    "ProviderName",
+    "ServiceProviderName",
     "BillingCurrency",
     round(sum("EffectiveCost"), 2) AS effective_cost
 FROM focus.cost_usage

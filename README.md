@@ -186,6 +186,8 @@ FROM focus.cost_usage;
 - `scripts/focus_demo.py`：Python CLI
 - `sql/01_schema.sql`：FOCUS 風格 PostgreSQL schema
 - `sql/02_seed_data.sql`：測試資料
+- `sql/03_seed_daily_5_years.sql`：2022-2026 每日測試資料產生檔，每朵雲 30 個 project 並包含多種 workload pattern
 - `sql/query_*.sql`：FinOps 範例查詢
 - `docs/focus_overview.md`：FOCUS 概念簡介
+- `CHANGELOG.md`：專案變更紀錄
 - `.codex/skills/focus-postgresql-demo`：專案維護用 skill

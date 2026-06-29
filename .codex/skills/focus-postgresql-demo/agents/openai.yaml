@@ -1,4 +1,4 @@
 interface:
-  display_name: "FOCUS PostgreSQL Demo"
-  short_description: "Maintain this FOCUS PostgreSQL showcase project."
-  default_prompt: "Use this skill when changing the FOCUS PostgreSQL demo project."
+  display_name: "FOCUS PostgreSQL Standard"
+  short_description: "Maintain the complete FOCUS v1.4 PostgreSQL example."
+  default_prompt: "Use $focus-postgresql-demo to update the complete FOCUS v1.4 PostgreSQL standard data example."
