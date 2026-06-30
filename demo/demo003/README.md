@@ -154,6 +154,18 @@ ORDER BY probability_over_budget_percent DESC, expected_cost_after_30_days DESC;
 | research | USD | 30 | 493900.00 | 31 | 959.46 | 227.78 | 28783.94 | 1247.62 | 0.0000 |
 | finops | USD | 30 | 493900.00 | 31 | 603.35 | 0.89 | 18100.47 | 4.88 | 0.0000 |
 
+圖表呈現：
+
+30 天後的超預算機率皆為 0%，因此以預期成本長條圖呈現更有辨識度。
+
+```mermaid
+xychart-beta
+    title "30 天後預期成本"
+    x-axis ["product", "finance", "research", "finops"]
+    y-axis "Expected cost USD" 0 --> 45000
+    bar [41133.43, 36666.57, 28783.94, 18100.47]
+```
+
 ### 03_annual_budget_probability_after_90_360_days.sql
 
 使用同一個年度預算 `493900.00 USD`，估算 90 天後與 360 天後超過年度預算的機率。
@@ -222,3 +234,22 @@ ORDER BY p.horizon_days, probability_over_budget_percent DESC, expected_cost_aft
 | finance | USD | 360 | 493900.00 | 31 | 1222.22 | 16.57 | 439998.82 | 314.34 | 0.0000 |
 | research | USD | 360 | 493900.00 | 31 | 959.46 | 227.78 | 345407.28 | 4321.87 | 0.0000 |
 | finops | USD | 360 | 493900.00 | 31 | 603.35 | 0.89 | 217205.63 | 16.90 | 0.0000 |
+
+圖表呈現：
+
+```mermaid
+xychart-beta
+    title "360 天後預期成本與年度預算"
+    x-axis ["product", "finance", "research", "finops"]
+    y-axis "Cost USD" 0 --> 500000
+    bar [493601.14, 439998.82, 345407.28, 217205.63]
+    line [493900.00, 493900.00, 493900.00, 493900.00]
+```
+
+```mermaid
+xychart-beta
+    title "360 天後超過年度預算機率"
+    x-axis ["product", "finance", "research", "finops"]
+    y-axis "Probability %" 0 --> 6
+    bar [5.6753, 0.0000, 0.0000, 0.0000]
+```
