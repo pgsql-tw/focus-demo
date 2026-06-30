@@ -145,6 +145,89 @@ python scripts/focus_demo.py query
 python scripts/focus_demo.py query query_01_daily_cost_by_provider
 ```
 
+本教學內建的範例查詢如下，SQL 內容與 `sql/query_*.sql` 檔案一致。
+
+### query_01_daily_cost_by_provider.sql
+
+```sql
+SELECT
+    date_trunc('day', "ChargePeriodStart")::date AS charge_day,
+    "ServiceProviderName",
+    "BillingCurrency",
+    round(sum("EffectiveCost"), 2) AS effective_cost
+FROM focus.cost_usage
+GROUP BY 1, 2, 3
+ORDER BY charge_day, effective_cost DESC;
+```
+
+### query_02_service_cost_by_owner.sql
+
+```sql
+SELECT
+    "Tags" ->> 'owner' AS owner,
+    "ServiceCategory",
+    "ServiceName",
+    round(sum("EffectiveCost"), 2) AS effective_cost
+FROM focus.cost_usage
+GROUP BY 1, 2, 3
+ORDER BY effective_cost DESC;
+```
+
+### query_03_resource_unit_economics.sql
+
+```sql
+SELECT
+    "ResourceName",
+    "ServiceName",
+    "ConsumedUnit",
+    sum("ConsumedQuantity") AS consumed_quantity,
+    round(sum("EffectiveCost"), 2) AS effective_cost,
+    round(sum("EffectiveCost") / NULLIF(sum("ConsumedQuantity"), 0), 6) AS effective_cost_per_unit
+FROM focus.cost_usage
+WHERE "ConsumedQuantity" IS NOT NULL
+GROUP BY 1, 2, 3
+ORDER BY effective_cost DESC;
+```
+
+### query_04_focus_quality_checks.sql
+
+```sql
+SELECT
+    count(*) AS row_count,
+    count(*) FILTER (WHERE "BillingCurrency" !~ '^[A-Z]{3}$') AS invalid_currency_rows,
+    count(*) FILTER (WHERE "ChargePeriodEnd" <= "ChargePeriodStart") AS invalid_charge_period_rows,
+    count(*) FILTER (WHERE "EffectiveCost" IS NULL) AS missing_effective_cost_rows,
+    count(*) FILTER (WHERE "ServiceProviderName" IS NULL OR "ServiceName" IS NULL) AS missing_provider_or_service_rows
+FROM focus.cost_usage;
+```
+
+### query_05_business_project_cost.sql
+
+```sql
+SELECT
+    p.project_id,
+    p.project_name,
+    p.business_unit,
+    count(DISTINCT a.service_provider_name) AS cloud_count,
+    string_agg(DISTINCT a.service_provider_name, ', ' ORDER BY a.service_provider_name) AS clouds,
+    count(DISTINCT a.cloud_account_key) AS cloud_account_count,
+    round(sum(cu."EffectiveCost" * pca.allocation_weight), 2) AS allocated_effective_cost
+FROM business.company_projects p
+JOIN business.project_cloud_accounts pca
+    ON pca.project_id = p.project_id
+JOIN business.cloud_accounts a
+    ON a.cloud_account_key = pca.cloud_account_key
+JOIN focus.cost_usage cu
+    ON cu."ServiceProviderName" = a.service_provider_name
+    AND cu."BillingAccountId" = a.billing_account_id
+    AND cu."SubAccountId" = a.sub_account_id
+GROUP BY 1, 2, 3
+ORDER BY allocated_effective_cost DESC;
+```
+
+獨立 demo：
+- [demo001：用量與費用成長 Top 10](demo/demo001/README.md)
+
 測試結果範例：
 
 ```text
