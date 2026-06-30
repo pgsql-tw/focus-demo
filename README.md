@@ -30,11 +30,9 @@ WHERE d.datname = 'focus-demo';
 
 預期結果：
 
-```text
-  datname   |   owner
-------------+------------
- focus-demo | focus-user
-```
+| datname | owner |
+|---|---|
+| focus-demo | focus-user |
 
 ## 2. 設定連線檔
 
@@ -227,19 +225,18 @@ ORDER BY allocated_effective_cost DESC;
 
 獨立 demo：
 - [demo001：用量與費用成長 Top 10](demo/demo001/README.md)
+- [demo002：每日成本移動平均](demo/demo002/README.md)
 
 測試結果範例：
 
-```text
-charge_day | ProviderName | BillingCurrency | effective_cost
------------+--------------+-----------------+---------------
-2026-06-01 | AWS          | USD             | 32.63
-2026-06-01 | Microsoft    | USD             | 31.82
-2026-06-01 | Google Cloud | USD             | 8.24
-2026-06-02 | Microsoft    | USD             | 47.10
-2026-06-02 | Google Cloud | USD             | 10.13
-2026-06-02 | AWS          | USD             | 9.76
-```
+| charge_day | ProviderName | BillingCurrency | effective_cost |
+|---|---|---|---:|
+| 2026-06-01 | AWS | USD | 32.63 |
+| 2026-06-01 | Microsoft | USD | 31.82 |
+| 2026-06-01 | Google Cloud | USD | 8.24 |
+| 2026-06-02 | Microsoft | USD | 47.10 |
+| 2026-06-02 | Google Cloud | USD | 10.13 |
+| 2026-06-02 | AWS | USD | 9.76 |
 
 ## 8. 用 SQL 直接檢查資料
 
@@ -250,11 +247,9 @@ FROM focus.cost_usage;
 
 預期結果：
 
-```text
- rows
-------
-    8
-```
+| rows |
+|---:|
+| 8 |
 
 ## 9. 你可以怎麼延伸
 
