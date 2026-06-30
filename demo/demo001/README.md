@@ -49,17 +49,15 @@ LIMIT 10;
 
 範例結果：
 
-```text
-    business_name    | ConsumedUnit | consumed_quantity | effective_cost
----------------------+--------------+-------------------+----------------
- Product Engineering | Request      |     375000.000000 |           3.04
- Data                | GiBy         |        915.000000 |           4.12
- Finance             | GiBy         |        915.000000 |           4.12
- Data                | GB-Month     |        460.000000 |           9.19
- Commerce            | GB-Month     |        204.800000 |          18.84
- Commerce            | Hour         |         57.600000 |          17.11
- Product Engineering | Hour         |         50.400000 |          22.28
-```
+| business_name | ConsumedUnit | consumed_quantity | effective_cost |
+|---|---|---:|---:|
+| Product Engineering | Request | 375000.000000 | 3.04 |
+| Data | GiBy | 915.000000 | 4.12 |
+| Finance | GiBy | 915.000000 | 4.12 |
+| Data | GB-Month | 460.000000 | 9.19 |
+| Commerce | GB-Month | 204.800000 | 18.84 |
+| Commerce | Hour | 57.600000 | 17.11 |
+| Product Engineering | Hour | 50.400000 | 22.28 |
 
 ### 02_service_usage_top10.sql
 
@@ -82,16 +80,14 @@ LIMIT 10;
 
 範例結果：
 
-```text
- ServiceProviderName | ServiceCategory |          ServiceName          | ConsumedUnit | consumed_quantity | effective_cost
----------------------+-----------------+-------------------------------+--------------+-------------------+----------------
- Google Cloud        | Compute         | Cloud Run                     | Request      |    1250000.000000 |          10.13
- Google Cloud        | Analytics       | BigQuery                      | GiBy         |       1830.000000 |           8.24
- AWS                 | Storage         | Amazon S3                     | GB-Month     |        920.000000 |          18.38
- Microsoft           | Database        | Azure Database for PostgreSQL | GB-Month     |        512.000000 |          47.10
- AWS                 | Database        | Amazon RDS                    | Hour         |         96.000000 |          28.51
- Microsoft           | Compute         | Virtual Machines              | Hour         |         72.000000 |          31.82
-```
+| ServiceProviderName | ServiceCategory | ServiceName | ConsumedUnit | consumed_quantity | effective_cost |
+|---|---|---|---|---:|---:|
+| Google Cloud | Compute | Cloud Run | Request | 1250000.000000 | 10.13 |
+| Google Cloud | Analytics | BigQuery | GiBy | 1830.000000 | 8.24 |
+| AWS | Storage | Amazon S3 | GB-Month | 920.000000 | 18.38 |
+| Microsoft | Database | Azure Database for PostgreSQL | GB-Month | 512.000000 | 47.10 |
+| AWS | Database | Amazon RDS | Hour | 96.000000 | 28.51 |
+| Microsoft | Compute | Virtual Machines | Hour | 72.000000 | 31.82 |
 
 ### 03_business_cost_growth_top10.sql
 
@@ -174,11 +170,9 @@ LIMIT 10;
 
 範例結果：
 
-```text
- business_name | BillingCurrency | current_month | previous_month | current_month_cost | previous_month_cost | cost_increase | increase_rate_percent
----------------+-----------------+---------------+----------------+--------------------+---------------------+---------------+-----------------------
- research      | USD             | 2026-12-01    | 2026-11-01     |           40705.69 |            16712.01 |      23993.68 |                143.57
- product       | USD             | 2026-12-01    | 2026-11-01     |           42788.52 |            40918.95 |       1869.57 |                  4.57
- finops        | USD             | 2026-12-01    | 2026-11-01     |           18690.03 |            18058.51 |        631.52 |                  3.50
- finance       | USD             | 2026-12-01    | 2026-11-01     |           37769.82 |            36982.42 |        787.40 |                  2.13
-```
+| business_name | BillingCurrency | current_month | previous_month | current_month_cost | previous_month_cost | cost_increase | increase_rate_percent |
+|---|---|---|---|---:|---:|---:|---:|
+| research | USD | 2026-12-01 | 2026-11-01 | 40705.69 | 16712.01 | 23993.68 | 143.57 |
+| product | USD | 2026-12-01 | 2026-11-01 | 42788.52 | 40918.95 | 1869.57 | 4.57 |
+| finops | USD | 2026-12-01 | 2026-11-01 | 18690.03 | 18058.51 | 631.52 | 3.50 |
+| finance | USD | 2026-12-01 | 2026-11-01 | 37769.82 | 36982.42 | 787.40 | 2.13 |
