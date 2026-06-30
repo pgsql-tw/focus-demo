@@ -2,6 +2,19 @@
 
 本檔記錄這個 FOCUS PostgreSQL 標準資料範例專案的主要變更。之後修改 schema、seed data、query、工具、文件或 skill 時，都要同步更新本檔。
 
+## 2026-06-30
+
+### Added
+
+- 新增獨立 demo001 目錄 `demo/demo001/`，收納業務用量 Top 10、service 用量 Top 10、最近一個月費用增加比率 Top 10 業務三個查詢。
+
+### Changed
+
+- 更新 `README.md`，改為連結到獨立的 demo001 說明頁。
+- 更新 `demo/demo001/README.md`，直接放入與 `.sql` 檔一致的完整查詢 SQL 內容。
+- 更新主 `README.md` 教學內容，直接放入 `sql/query_*.sql` 的完整查詢 SQL 內容。
+- 調整 `demo/demo001/README.md`，移除執行方式並加入三個查詢的範例執行結果。
+
 ## 2026-06-29
 
 ### Added
