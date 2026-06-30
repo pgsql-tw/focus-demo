@@ -8,6 +8,7 @@
 
 - 新增獨立 demo001 目錄 `demo/demo001/`，收納業務用量 Top 10、service 用量 Top 10、最近一個月費用增加比率 Top 10 業務三個查詢。
 - 新增獨立 demo002 目錄 `demo/demo002/`，示範建立每日業務成本 materialized view，並以 M30、M90、M360 移動平均查詢近月成本趨勢。
+- 新增獨立 demo003 目錄 `demo/demo003/`，示範建立類 Excel NORM.DIST 的常態分布函數，並用 M30 平均數與標準差估算 30、90、360 天後超過年度預算的機率。
 
 ### Changed
 

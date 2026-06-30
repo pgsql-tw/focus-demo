@@ -226,6 +226,7 @@ ORDER BY allocated_effective_cost DESC;
 獨立 demo：
 - [demo001：用量與費用成長 Top 10](demo/demo001/README.md)
 - [demo002：每日成本移動平均](demo/demo002/README.md)
+- [demo003：年度預算超支機率](demo/demo003/README.md)
 
 測試結果範例：
 
