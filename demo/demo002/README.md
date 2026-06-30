@@ -158,6 +158,16 @@ ORDER BY average_month_cost_from_m30 DESC;
 | research | USD | 2026-12-01 | 2026-12-31 | 959.46 | 28783.94 |
 | finops | USD | 2026-12-01 | 2026-12-31 | 603.35 | 18100.47 |
 
+圖表呈現：
+
+```mermaid
+xychart-beta
+    title "以 M30 換算的平均月成本"
+    x-axis ["product", "finance", "research", "finops"]
+    y-axis "Average month cost USD" 0 --> 45000
+    bar [41133.43, 36666.57, 28783.94, 18100.47]
+```
+
 ### 03_recent_month_moving_averages.sql
 
 查詢近一個月各業務的每日成本，以及 M30、M90、M360 平均值。
@@ -192,6 +202,32 @@ ORDER BY average_m30_daily_cost DESC;
 | finance | USD | 2026-12-01 | 2026-12-31 | 31 | 1218.38 | 1222.22 | 1228.36 | 1227.35 |
 | research | USD | 2026-12-01 | 2026-12-31 | 31 | 1313.09 | 959.46 | 801.49 | 802.33 |
 | finops | USD | 2026-12-01 | 2026-12-31 | 31 | 602.90 | 603.35 | 603.25 | 602.47 |
+
+圖表呈現：
+
+這個查詢回傳的是近月彙總平均，適合比較每日實際平均與 M30/M90/M360 基準；若要逐日趨勢線，可直接查 `business.mv_daily_business_cost_moving_average` 的 `charge_day` 明細。
+
+```mermaid
+xychart-beta
+    title "近月每日成本與移動平均基準"
+    x-axis ["product", "finance", "research", "finops"]
+    y-axis "Daily cost USD" 0 --> 1500
+    bar [1380.27, 1218.38, 1313.09, 602.90]
+    line [1371.11, 1222.22, 959.46, 603.35]
+    line [1370.25, 1228.36, 801.49, 603.25]
+    line [1365.81, 1227.35, 802.33, 602.47]
+```
+
+若要看真正按日期變化的趨勢線，可從 materialized view 抽樣近月日期點。下圖以所有業務加總的每日成本與 M30 基準呈現。
+
+```mermaid
+xychart-beta
+    title "2026-12 每日成本趨勢抽樣"
+    x-axis ["12-01", "12-08", "12-15", "12-22", "12-29", "12-31"]
+    y-axis "Daily cost USD" 0 --> 5000
+    line [4301.51, 4283.84, 4296.21, 4308.58, 4856.19, 4859.73]
+    line [3771.15, 3949.91, 4124.66, 4303.42, 4478.18, 4521.75]
+```
 
 ### 04_recent_month_m30_gt_m90_businesses.sql
 
@@ -237,3 +273,13 @@ ORDER BY gap_percent DESC, daily_cost_gap DESC;
 | research | USD | 31 | 959.46 | 801.49 | 157.98 | 19.71 |
 | product | USD | 31 | 1371.11 | 1370.25 | 0.87 | 0.06 |
 | finops | USD | 31 | 603.35 | 603.25 | 0.10 | 0.02 |
+
+圖表呈現：
+
+```mermaid
+xychart-beta
+    title "M30 高於 M90 的近期升溫幅度"
+    x-axis ["research", "product", "finops"]
+    y-axis "Gap %" 0 --> 20
+    bar [19.71, 0.06, 0.02]
+```

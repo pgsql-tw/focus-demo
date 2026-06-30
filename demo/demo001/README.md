@@ -51,13 +51,28 @@ LIMIT 10;
 
 | business_name | ConsumedUnit | consumed_quantity | effective_cost |
 |---|---|---:|---:|
-| Product Engineering | Request | 375000.000000 | 3.04 |
-| Data | GiBy | 915.000000 | 4.12 |
-| Finance | GiBy | 915.000000 | 4.12 |
-| Data | GB-Month | 460.000000 | 9.19 |
-| Commerce | GB-Month | 204.800000 | 18.84 |
-| Commerce | Hour | 57.600000 | 17.11 |
-| Product Engineering | Hour | 50.400000 | 22.28 |
+| finance | Request | 18654363119.724429 | 156608.34 |
+| product | Request | 18496346371.756691 | 155281.75 |
+| research | Request | 12285054856.221666 | 103136.31 |
+| finops | Request | 9151465407.345397 | 76828.99 |
+| finance | GiBy | 29597264.183026 | 133187.69 |
+| product | GiBy | 29346552.678216 | 132059.49 |
+| finance | GB-Month | 19767737.801341 | 823842.28 |
+| product | GB-Month | 19600289.915788 | 816863.70 |
+| research | GiBy | 19491633.767659 | 87712.35 |
+| finops | GiBy | 14519838.473685 | 65339.27 |
+
+圖表呈現：
+
+`ConsumedUnit` 混合 Request、GiBy、GB-Month，不適合把用量放在同一張比例圖比較；以下改用同一貨幣口徑的 `effective_cost` 顯示 Top 10 用量列對應成本。
+
+```mermaid
+xychart-beta
+    title "Business usage Top 10 對應成本"
+    x-axis ["finance Request", "product Request", "research Request", "finops Request", "finance GiBy", "product GiBy", "finance GB-Month", "product GB-Month", "research GiBy", "finops GiBy"]
+    y-axis "EffectiveCost USD" 0 --> 850000
+    bar [156608.34, 155281.75, 103136.31, 76828.99, 133187.69, 132059.49, 823842.28, 816863.70, 87712.35, 65339.27]
+```
 
 ### 02_service_usage_top10.sql
 
@@ -82,12 +97,32 @@ LIMIT 10;
 
 | ServiceProviderName | ServiceCategory | ServiceName | ConsumedUnit | consumed_quantity | effective_cost |
 |---|---|---|---|---:|---:|
-| Google Cloud | Compute | Cloud Run | Request | 1250000.000000 | 10.13 |
-| Google Cloud | Analytics | BigQuery | GiBy | 1830.000000 | 8.24 |
-| AWS | Storage | Amazon S3 | GB-Month | 920.000000 | 18.38 |
-| Microsoft | Database | Azure Database for PostgreSQL | GB-Month | 512.000000 | 47.10 |
-| AWS | Database | Amazon RDS | Hour | 96.000000 | 28.51 |
-| Microsoft | Compute | Virtual Machines | Hour | 72.000000 | 31.82 |
+| Google Cloud | Compute | Cloud Run | Request | 39366310959.044731 | 318867.12 |
+| AWS | Compute | AWS Lambda | Request | 19220918796.003452 | 172988.27 |
+| Google Cloud | Analytics | BigQuery | GiBy | 92955289.102586 | 418298.80 |
+| AWS | Storage | Amazon S3 | GB-Month | 28973604.865139 | 612791.74 |
+| Google Cloud | Storage | Cloud Storage | GB-Month | 16985928.238216 | 305746.71 |
+| Microsoft | Database | Azure Database for PostgreSQL | GB-Month | 16124440.969313 | 1668879.64 |
+| Microsoft | Compute | Virtual Machines | Hour | 3657257.276559 | 1711596.40 |
+| AWS | Database | Amazon RDS | Hour | 2438171.518836 | 724136.94 |
+| Microsoft | Analytics | Azure Synapse Analytics | Hour | 536397.733672 | 579309.55 |
+
+圖表呈現：
+
+這個結果同樣有不同 `ConsumedUnit`，所以圓餅圖採用 `effective_cost` 呈現 Top service 的成本占比。
+
+```mermaid
+pie title Service usage Top 10 對應成本占比
+    "Cloud Run" : 318867.12
+    "AWS Lambda" : 172988.27
+    "BigQuery" : 418298.80
+    "Amazon S3" : 612791.74
+    "Cloud Storage" : 305746.71
+    "Azure Database for PostgreSQL" : 1668879.64
+    "Virtual Machines" : 1711596.40
+    "Amazon RDS" : 724136.94
+    "Azure Synapse Analytics" : 579309.55
+```
 
 ### 03_business_cost_growth_top10.sql
 
@@ -176,3 +211,13 @@ LIMIT 10;
 | product | USD | 2026-12-01 | 2026-11-01 | 42788.52 | 40918.95 | 1869.57 | 4.57 |
 | finops | USD | 2026-12-01 | 2026-11-01 | 18690.03 | 18058.51 | 631.52 | 3.50 |
 | finance | USD | 2026-12-01 | 2026-11-01 | 37769.82 | 36982.42 | 787.40 | 2.13 |
+
+圖表呈現：
+
+```mermaid
+xychart-beta
+    title "最近一個月費用增加率"
+    x-axis ["research", "product", "finops", "finance"]
+    y-axis "Increase rate %" 0 --> 150
+    bar [143.57, 4.57, 3.50, 2.13]
+```
