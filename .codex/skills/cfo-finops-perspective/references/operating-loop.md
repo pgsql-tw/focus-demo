@@ -15,6 +15,19 @@ Use this reference when updating CFO-facing docs or interpreting demo evidence.
    - Is the recommended action credible for finance and engineering?
 6. Write the lesson back into `docs/` so the next demo starts from evidence, not memory.
 
+## Demo README Style Principles
+
+Use these rules when preparing or revising CFO-facing demo README files, especially `demo/demo004/`:
+
+- Start with the CFO-facing answer. Recommended order: CFO narrative or question, actual observed results, result charts, output field meaning, then implementation process, formula, and SQL details.
+- Do not turn the README into one long SQL wall. If SQL must be embedded, split it into small labeled sections by intent, such as object setup, source mapping, time-window filtering, metric calculation, scoring, output shaping, indexes, and metadata comments.
+- Make the execution model clear. The `.sql` file can remain the runnable unit, while README snippets can be marked as reading fragments that explain the logic in smaller steps.
+- Keep instructions portable. Avoid local filesystem paths, fixed PostgreSQL binary paths, and local-only `psql` command examples unless the user explicitly asks for setup or troubleshooting notes.
+- Preserve the CFO narrative around the code. Each SQL section should answer why the metric matters for budget confidence, ownership, commitment coverage, volatility, concentration, or governance action.
+- Results should include the actual observed output when available. Use compact tables for evidence and add Mermaid charts when a ranking, gap, mix, or distribution helps a CFO understand the decision.
+- Charts must be management artifacts, not decoration. Prefer visuals such as Top N risk scores, run rate versus budget, risk-level distribution, or primary-driver distribution when the data supports them.
+- Keep chart labels concise and tied to the question being answered. If a chart would repeat a nearby table without improving interpretation, skip it.
+
 ## CFO Biases To Keep Explicit
 
 - Favor predictability over pure cost minimization.

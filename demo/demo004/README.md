@@ -4,6 +4,103 @@
 
 CFO 觀點不是只看哪個專案花最多錢，而是判斷哪些專案正在讓預算、預測可信度、折扣效率或成本集中度變得不可控。
 
+## CFO 敘事
+
+這個 demo 讓財務團隊可以把雲端支出轉成一張風險排序表：先找出高風險專案，再看風險是來自預算燃燒、成本加速、預測波動、折扣不足，還是服務集中。這讓 FinOps 從月底解釋成本，往前推進成月中就能治理財務風險。
+
+## 實際執行結果
+
+以下結果來自本機 PostgreSQL 驗證輸出，原始 logs 保存在 ignored 的 `outputs/demo004/` 目錄中。
+
+### 驗證摘要
+
+| 驗證項目 | 結果 |
+|---|---:|
+| `focus.cost_usage` 欄位數 | 107 |
+| `focus.cost_usage` 資料列 | 493,020 |
+| `business.project_budgets` 資料列 | 90 |
+| `business.mv_project_financial_risk_score` 資料列 | 90 |
+
+### CFO Top 10 高風險專案
+
+| project_id | project_name | business_unit | score_as_of_date | monthly_budget | month_to_date_effective_cost | current_month_run_rate | cloud_financial_risk_score | risk_level | primary_risk_driver |
+|---|---|---|---|---:|---:|---:|---:|---|---|
+| `gcp-prj-17` | GCP Project 17 | research | 2026-12-31 | 930.63 | 1,883.76 | 1,883.76 | 80.10 | Critical | BudgetRunRateRisk |
+| `gcp-prj-05` | GCP Project 05 | research | 2026-12-31 | 900.88 | 1,823.53 | 1,823.53 | 80.10 | Critical | BudgetRunRateRisk |
+| `gcp-prj-11` | GCP Project 11 | research | 2026-12-31 | 841.37 | 1,703.08 | 1,703.08 | 80.10 | Critical | BudgetRunRateRisk |
+| `gcp-prj-23` | GCP Project 23 | research | 2026-12-31 | 374.58 | 758.22 | 758.22 | 80.10 | Critical | BudgetRunRateRisk |
+| `gcp-prj-29` | GCP Project 29 | research | 2026-12-31 | 250.00 | 349.92 | 349.92 | 80.10 | Critical | BudgetRunRateRisk |
+| `az-prj-17` | Azure Project 17 | research | 2026-12-31 | 3,533.48 | 7,152.35 | 7,152.35 | 78.15 | Critical | BudgetRunRateRisk |
+| `az-prj-05` | Azure Project 05 | research | 2026-12-31 | 3,420.51 | 6,923.67 | 6,923.67 | 78.15 | Critical | BudgetRunRateRisk |
+| `az-prj-11` | Azure Project 11 | research | 2026-12-31 | 3,194.56 | 6,466.33 | 6,466.33 | 78.15 | Critical | BudgetRunRateRisk |
+| `az-prj-23` | Azure Project 23 | research | 2026-12-31 | 1,422.24 | 2,878.85 | 2,878.85 | 78.15 | Critical | BudgetRunRateRisk |
+| `az-prj-29` | Azure Project 29 | research | 2026-12-31 | 656.36 | 1,328.58 | 1,328.58 | 78.15 | Critical | BudgetRunRateRisk |
+
+```mermaid
+xychart-beta
+    title "CFO Top 10 專案風險分數"
+    x-axis ["gcp17", "gcp05", "gcp11", "gcp23", "gcp29", "az17", "az05", "az11", "az23", "az29"]
+    y-axis "CFRS" 0 --> 100
+    bar [80.10, 80.10, 80.10, 80.10, 80.10, 78.15, 78.15, 78.15, 78.15, 78.15]
+```
+
+```mermaid
+xychart-beta
+    title "Top 10 月度 run rate 與預算差距"
+    x-axis ["gcp17", "gcp05", "gcp11", "gcp23", "gcp29", "az17", "az05", "az11", "az23", "az29"]
+    y-axis "USD" 0 --> 8000
+    bar [1883.76, 1823.53, 1703.08, 758.22, 349.92, 7152.35, 6923.67, 6466.33, 2878.85, 1328.58]
+    line [930.63, 900.88, 841.37, 374.58, 250.00, 3533.48, 3420.51, 3194.56, 1422.24, 656.36]
+```
+
+### 風險來源彙總
+
+| risk_level | primary_risk_driver | project_count | average_risk_score | month_to_date_effective_cost | current_month_run_rate | monthly_budget |
+|---|---|---:|---:|---:|---:|---:|
+| Critical | BudgetRunRateRisk | 15 | 78.68 | 40,705.70 | 40,705.70 | 20,186.98 |
+| High | BudgetRunRateRisk | 12 | 54.49 | 14,664.03 | 14,664.03 | 12,171.74 |
+| Watch | BudgetRunRateRisk | 15 | 38.32 | 27,615.41 | 27,615.41 | 20,934.76 |
+| Watch | ForecastVolatilityRisk | 30 | 36.89 | 37,689.38 | 37,689.38 | 38,467.78 |
+| Low | ForecastVolatilityRisk | 2 | 23.86 | 387.43 | 387.43 | 500.00 |
+| Low | BudgetRunRateRisk | 14 | 10.46 | 18,539.23 | 18,539.23 | 20,112.29 |
+| Low | CommitmentCoverageRisk | 2 | 7.08 | 352.91 | 352.91 | 500.00 |
+
+```mermaid
+pie showData
+    title 專案風險等級分布
+    "Critical" : 15
+    "High" : 12
+    "Watch" : 45
+    "Low" : 18
+```
+
+```mermaid
+pie showData
+    title 主要風險來源分布
+    "BudgetRunRateRisk" : 56
+    "ForecastVolatilityRisk" : 32
+    "CommitmentCoverageRisk" : 2
+```
+
+### CFO 解讀
+
+這次結果顯示 `BudgetRunRateRisk` 是 Critical 與 High 專案的主要風險來源，代表第一版 CFRS 很清楚地抓到「照目前速度會超出預算」的 CFO 問題。這適合作為財務風險升級 demo，但也提醒後續版本應加入更強的 volatility、concentration 與 commitment 情境，避免整體分數長期被 run rate 單一因素主導。
+
+## 輸出欄位
+
+| 欄位 | CFO 解讀 |
+|---|---|
+| `cloud_financial_risk_score` | 0 到 100 的專案財務風險總分 |
+| `risk_level` | Low、Watch、High 或 Critical |
+| `primary_risk_driver` | 對總分貢獻最大的風險來源 |
+| `current_month_run_rate` | 依本月至今成本推估的整月成本 |
+| `monthly_budget` | CFO 月度預算基準 |
+| `recommended_cfo_action` | 依分數建議採取的治理動作 |
+
+## 實作過程
+
+以下保留可追溯的 demo 流程、風險公式與分段 SQL。CFO 先讀前面的結果與敘事；需要驗證或修改邏輯時，再從這裡往下檢查。
+
 ## Demo 流程
 
 1. `01_create_project_budgets.sql` 建立 `business.project_budgets`，並依目前成本資料產生專案月度與年度預算基準。
@@ -25,11 +122,13 @@ CFRS = 100 * (
 
 ## 執行順序與 SQL 內容
 
-建議先載入五年 daily seed，讓移動平均與波動風險更有意義。以下依執行順序列出 demo004 使用的完整 SQL 內容；可逐段複製到 SQL client 執行，或與專案腳本搭配使用。
+建議先載入五年 daily seed，讓移動平均與波動風險更有意義。以下依執行順序列出 demo004 使用的 SQL 內容；為了降低閱讀負擔，較長的 SQL 會拆成多個片段呈現。實際執行時，仍以同一個 `.sql` 檔案的完整內容為一個執行單位。
 
 ### 01_create_project_budgets.sql
 
 建立 CFO 專案預算表，並依目前成本資料產生月度與年度預算基準。
+
+#### 01-A 清理舊物件並建立預算表
 
 ```sql
 DROP MATERIALIZED VIEW IF EXISTS business.mv_project_financial_risk_score;
@@ -50,7 +149,11 @@ CREATE TABLE business.project_budgets (
     CHECK (monthly_budget > 0),
     CHECK (annual_budget >= monthly_budget)
 );
+```
 
+#### 01-B 將 FOCUS 成本映射到 project 與每日成本
+
+```sql
 WITH project_cost_rows AS (
     SELECT
         COALESCE(
@@ -100,6 +203,11 @@ latest_day AS (
     SELECT max(charge_day) AS max_charge_day
     FROM daily_project_costs
 ),
+```
+
+#### 01-C 取最近 90 天成本並套用 CFO 預算假設
+
+```sql
 recent_project_costs AS (
     SELECT
         d.project_id,
@@ -133,6 +241,11 @@ budget_assumptions AS (
         observed_days
     FROM recent_project_costs
 )
+```
+
+#### 01-D 寫入月度與年度預算基準
+
+```sql
 INSERT INTO business.project_budgets (
     project_id,
     project_name,
@@ -157,7 +270,11 @@ ORDER BY b.business_unit, b.project_id;
 
 CREATE INDEX idx_project_budgets_business_unit
     ON business.project_budgets (business_unit, billing_currency, budget_period_start);
+```
 
+#### 01-E 補上預算表 metadata comments
+
+```sql
 COMMENT ON TABLE business.project_budgets IS
     'CFO 財務風險 demo 使用的專案預算表，保存每個專案在指定期間的月度與年度預算，用來評估雲端成本是否偏離財務承諾。';
 
@@ -201,6 +318,8 @@ COMMENT ON INDEX business.idx_project_budgets_business_unit IS
 ### 02_create_project_financial_risk_score.sql
 
 建立 CFO 財務風險分數物化視圖，計算五個子指標與 CFRS 總分。
+
+#### 02-A 建立物化視圖與 project 成本基礎資料
 
 ```sql
 DROP MATERIALIZED VIEW IF EXISTS business.mv_project_financial_risk_score;
@@ -259,6 +378,11 @@ latest_day AS (
     SELECT max(charge_day) AS max_charge_day
     FROM daily_project_costs
 ),
+```
+
+#### 02-B 取得預算期間與近期成本統計
+
+```sql
 budgeted_projects AS (
     SELECT
         b.project_id,
@@ -302,6 +426,11 @@ recent_metrics AS (
         AND d.billing_currency = bp.billing_currency
     GROUP BY 1, 2
 ),
+```
+
+#### 02-C 計算折扣覆蓋與服務集中度
+
+```sql
 commitment_metrics AS (
     SELECT
         bp.project_id,
@@ -338,6 +467,11 @@ concentration_metrics AS (
     FROM service_costs
     GROUP BY 1, 2
 ),
+```
+
+#### 02-D 彙整風險輸入資料
+
+```sql
 risk_inputs AS (
     SELECT
         bp.project_id,
@@ -372,6 +506,11 @@ risk_inputs AS (
         ON con.project_id = bp.project_id
         AND con.billing_currency = bp.billing_currency
 ),
+```
+
+#### 02-E 將五個子指標正規化並計算 CFRS
+
+```sql
 normalized_risks AS (
     SELECT
         ri.*,
@@ -396,6 +535,11 @@ scored_projects AS (
         ) AS cloud_financial_risk_score
     FROM normalized_risks nr
 )
+```
+
+#### 02-F 輸出 CFO 管理欄位、風險等級與建議行動
+
+```sql
 SELECT
     project_id,
     project_name,
@@ -445,7 +589,11 @@ SELECT
     END AS recommended_cfo_action
 FROM scored_projects
 ORDER BY cloud_financial_risk_score DESC, month_to_date_effective_cost DESC;
+```
 
+#### 02-G 建立查詢索引並補上 metadata comments
+
+```sql
 CREATE UNIQUE INDEX idx_mv_project_financial_risk_score_key
     ON business.mv_project_financial_risk_score (project_id, billing_currency, budget_period_start);
 
@@ -581,62 +729,3 @@ ORDER BY
     END,
     average_risk_score DESC;
 ```
-
-## 實際執行結果
-
-以下結果來自本機 PostgreSQL 驗證輸出，原始 logs 保存在 ignored 的 `outputs/demo004/` 目錄中。
-
-### 驗證摘要
-
-| 驗證項目 | 結果 |
-|---|---:|
-| `focus.cost_usage` 欄位數 | 107 |
-| `focus.cost_usage` 資料列 | 493,020 |
-| `business.project_budgets` 資料列 | 90 |
-| `business.mv_project_financial_risk_score` 資料列 | 90 |
-
-### CFO Top 10 高風險專案
-
-| project_id | project_name | business_unit | score_as_of_date | monthly_budget | month_to_date_effective_cost | current_month_run_rate | cloud_financial_risk_score | risk_level | primary_risk_driver |
-|---|---|---|---|---:|---:|---:|---:|---|---|
-| `gcp-prj-17` | GCP Project 17 | research | 2026-12-31 | 930.63 | 1,883.76 | 1,883.76 | 80.10 | Critical | BudgetRunRateRisk |
-| `gcp-prj-05` | GCP Project 05 | research | 2026-12-31 | 900.88 | 1,823.53 | 1,823.53 | 80.10 | Critical | BudgetRunRateRisk |
-| `gcp-prj-11` | GCP Project 11 | research | 2026-12-31 | 841.37 | 1,703.08 | 1,703.08 | 80.10 | Critical | BudgetRunRateRisk |
-| `gcp-prj-23` | GCP Project 23 | research | 2026-12-31 | 374.58 | 758.22 | 758.22 | 80.10 | Critical | BudgetRunRateRisk |
-| `gcp-prj-29` | GCP Project 29 | research | 2026-12-31 | 250.00 | 349.92 | 349.92 | 80.10 | Critical | BudgetRunRateRisk |
-| `az-prj-17` | Azure Project 17 | research | 2026-12-31 | 3,533.48 | 7,152.35 | 7,152.35 | 78.15 | Critical | BudgetRunRateRisk |
-| `az-prj-05` | Azure Project 05 | research | 2026-12-31 | 3,420.51 | 6,923.67 | 6,923.67 | 78.15 | Critical | BudgetRunRateRisk |
-| `az-prj-11` | Azure Project 11 | research | 2026-12-31 | 3,194.56 | 6,466.33 | 6,466.33 | 78.15 | Critical | BudgetRunRateRisk |
-| `az-prj-23` | Azure Project 23 | research | 2026-12-31 | 1,422.24 | 2,878.85 | 2,878.85 | 78.15 | Critical | BudgetRunRateRisk |
-| `az-prj-29` | Azure Project 29 | research | 2026-12-31 | 656.36 | 1,328.58 | 1,328.58 | 78.15 | Critical | BudgetRunRateRisk |
-
-### 風險來源彙總
-
-| risk_level | primary_risk_driver | project_count | average_risk_score | month_to_date_effective_cost | current_month_run_rate | monthly_budget |
-|---|---|---:|---:|---:|---:|---:|
-| Critical | BudgetRunRateRisk | 15 | 78.68 | 40,705.70 | 40,705.70 | 20,186.98 |
-| High | BudgetRunRateRisk | 12 | 54.49 | 14,664.03 | 14,664.03 | 12,171.74 |
-| Watch | BudgetRunRateRisk | 15 | 38.32 | 27,615.41 | 27,615.41 | 20,934.76 |
-| Watch | ForecastVolatilityRisk | 30 | 36.89 | 37,689.38 | 37,689.38 | 38,467.78 |
-| Low | ForecastVolatilityRisk | 2 | 23.86 | 387.43 | 387.43 | 500.00 |
-| Low | BudgetRunRateRisk | 14 | 10.46 | 18,539.23 | 18,539.23 | 20,112.29 |
-| Low | CommitmentCoverageRisk | 2 | 7.08 | 352.91 | 352.91 | 500.00 |
-
-### CFO 解讀
-
-這次結果顯示 `BudgetRunRateRisk` 是 Critical 與 High 專案的主要風險來源，代表第一版 CFRS 很清楚地抓到「照目前速度會超出預算」的 CFO 問題。這適合作為財務風險升級 demo，但也提醒後續版本應加入更強的 volatility、concentration 與 commitment 情境，避免整體分數長期被 run rate 單一因素主導。
-
-## 輸出欄位
-
-| 欄位 | CFO 解讀 |
-|---|---|
-| `cloud_financial_risk_score` | 0 到 100 的專案財務風險總分 |
-| `risk_level` | Low、Watch、High 或 Critical |
-| `primary_risk_driver` | 對總分貢獻最大的風險來源 |
-| `current_month_run_rate` | 依本月至今成本推估的整月成本 |
-| `monthly_budget` | CFO 月度預算基準 |
-| `recommended_cfo_action` | 依分數建議採取的治理動作 |
-
-## CFO 敘事
-
-這個 demo 讓財務團隊可以把雲端支出轉成一張風險排序表：先找出高風險專案，再看風險是來自預算燃燒、成本加速、預測波動、折扣不足，還是服務集中。這讓 FinOps 從月底解釋成本，往前推進成月中就能治理財務風險。
