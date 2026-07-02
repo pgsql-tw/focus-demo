@@ -11,6 +11,10 @@
 
 ### Changed
 
+- 更新 `cfo-finops-perspective` skill，要求後續 demo README 將長 SQL 拆成可閱讀段落，避免本機執行路徑，並在結果適合時加入 CFO 決策圖表。
+- 更新 `cfo-finops-perspective` skill，將 demo README 的呈現順序明確定為先 CFO 敘事與實際結果，再接實作流程、公式與 SQL 細節。
+- 重排 `demo/demo004/README.md`，將 CFO 敘事、實際執行結果與輸出欄位提前，讓財務決策觀點先於 SQL 實作細節呈現。
+- 調整 `demo/demo004/README.md`，將長 SQL 說明拆成較小的閱讀段落，並新增 CFO Top 10、run rate 對預算、風險等級與主要風險來源圖表。
 - 補充 `demo/demo004/README.md` 的實際 PostgreSQL 驗證結果、CFO Top 10 高風險專案與風險來源彙總。
 
 本檔記錄這個 FOCUS PostgreSQL 標準資料範例專案的主要變更。之後修改 schema、seed data、query、工具、文件或 skill 時，都要同步更新本檔。

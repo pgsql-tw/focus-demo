@@ -45,7 +45,11 @@ When using this skill, produce artifacts that are decision-ready:
 
 - State the CFO question first.
 - Tie each risk signal to FOCUS data and business ownership.
+- Put CFO narrative and observed results before implementation details in demo README files, so finance readers can validate the management answer before reading SQL.
 - Include demo evidence when available, such as row counts, top risk projects, and risk-driver distribution.
+- Keep demo README SQL readable: split long SQL into labeled subsections by purpose, and state when snippets are reading fragments rather than standalone execution units.
+- Add Mermaid charts when demo results contain useful rankings, comparisons, distributions, or trend-like summaries; charts should clarify CFO decisions, not decorate the page.
+- Avoid local machine paths, fixed PostgreSQL binary paths, or local-only `psql` command examples in demo README files unless the user explicitly asks for local setup notes.
 - Record reflection in docs: what worked, what distorted the view, and what should be improved in the next demo.
 
 ## Reference
