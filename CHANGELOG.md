@@ -4,6 +4,7 @@
 
 ### Added
 
+- 新增 `docs/cfo_ai_tokenomics_finops_view.md`，記錄 CFO 對 AI tokenomics、agentic AI 成本波動、次級雲成本與 AI Financial Control Score 的 FinOps 治理想法。
 - 新增 `cfo-finops-perspective` project skill，讓後續工作能以 CFO 視角設計 FinOps demo、更新 docs，並從 demo 結果回寫反思。
 - 新增 `docs/cfo_finops_operating_view.md`，記錄 CFO 對 FinOps 成熟度、財務風險指標與 demo004 實作結果的觀點回饋。
 - 新增 `demo/demo004/`，實作 CFO Cloud Financial Risk Score demo，包含專案預算表、財務風險物化視圖、Top 10 風險排序與風險來源彙總查詢。
@@ -11,6 +12,7 @@
 
 ### Changed
 
+- 更新 `docs/cfo_finops_operating_view.md` 的下一步 demo 想法，加入 AI Financial Control Score 作為 CFRS 之後的延伸方向。
 - 更新 `cfo-finops-perspective` skill，要求後續 demo README 將長 SQL 拆成可閱讀段落，避免本機執行路徑，並在結果適合時加入 CFO 決策圖表。
 - 更新 `cfo-finops-perspective` skill，將 demo README 的呈現順序明確定為先 CFO 敘事與實際結果，再接實作流程、公式與 SQL 細節。
 - 重排 `demo/demo004/README.md`，將 CFO 敘事、實際執行結果與輸出欄位提前，讓財務決策觀點先於 SQL 實作細節呈現。
