@@ -79,7 +79,7 @@ Top 10 風險專案集中在 research 類型的 GCP 與 Azure project，最高�
 - 加入 owner SLA，例如 Critical 風險必須在 5 個工作天內提出改善計畫。
 - 設計 commitment overcommitment risk，避免只懲罰折扣不足，而忽略買太多承諾的風險。
 - 增加情境測試資料，讓 volatility、concentration、commitment risk 都有機會成為 primary risk driver。
-- 參考 `docs/cfo_ai_tokenomics_finops_view.md`，設計 AI Financial Control Score，將 token、agentic workflow、AI 周邊雲成本與業務價值證據納入 CFO 治理。
+- 參考 `docs/cfo_ai_tokenomics_finops_view.md`，持續校準 demo005 的 AI Financial Control Score，讓 token、agentic workflow、AI 周邊雲成本、owner/guardrail 與業務價值證據都能在不同情境下成為主要治理缺口。
 
 ## 給後續 Codex 的工作原則
 

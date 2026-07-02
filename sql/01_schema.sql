@@ -1,6 +1,11 @@
 CREATE SCHEMA IF NOT EXISTS focus;
 CREATE SCHEMA IF NOT EXISTS business;
 
+DROP MATERIALIZED VIEW IF EXISTS business.mv_ai_financial_control_score;
+DROP MATERIALIZED VIEW IF EXISTS business.mv_project_financial_risk_score;
+DROP TABLE IF EXISTS business.ai_workflow_daily_usage;
+DROP TABLE IF EXISTS business.ai_workflow_controls;
+DROP TABLE IF EXISTS business.project_budgets;
 DROP TABLE IF EXISTS business.project_cloud_accounts;
 DROP TABLE IF EXISTS business.cloud_accounts;
 DROP TABLE IF EXISTS business.company_projects;

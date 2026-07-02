@@ -4,6 +4,7 @@
 
 ### Added
 
+- 新增 `demo/demo005/`，實作 AI Financial Control Score demo，包含 AI workflow 控制表、每日 token/agent 使用量表、AI 財務治理分數物化視圖、Top 10 風險排序、治理缺口彙總與成本價值證據彙總查詢。
 - 新增 `docs/cfo_ai_tokenomics_finops_view.md`，記錄 CFO 對 AI tokenomics、agentic AI 成本波動、次級雲成本與 AI Financial Control Score 的 FinOps 治理想法。
 - 新增 `cfo-finops-perspective` project skill，讓後續工作能以 CFO 視角設計 FinOps demo、更新 docs，並從 demo 結果回寫反思。
 - 新增 `docs/cfo_finops_operating_view.md`，記錄 CFO 對 FinOps 成熟度、財務風險指標與 demo004 實作結果的觀點回饋。
@@ -12,6 +13,8 @@
 
 ### Changed
 
+- 更新 `sql/01_schema.sql` 的重建順序，先清除 demo004/demo005 產生的物化視圖與輔助表，避免跑過 demo 後重新初始化 schema 時被相依物件阻擋。
+- 更新 `README.md`、`docs/cfo_ai_tokenomics_finops_view.md` 與 `docs/cfo_finops_operating_view.md`，加入 demo005 實作結果與後續校準方向。
 - 更新 `docs/cfo_finops_operating_view.md` 的下一步 demo 想法，加入 AI Financial Control Score 作為 CFRS 之後的延伸方向。
 - 更新 `cfo-finops-perspective` skill，要求後續 demo README 將長 SQL 拆成可閱讀段落，避免本機執行路徑，並在結果適合時加入 CFO 決策圖表。
 - 更新 `cfo-finops-perspective` skill，將 demo README 的呈現順序明確定為先 CFO 敘事與實際結果，再接實作流程、公式與 SQL 細節。
