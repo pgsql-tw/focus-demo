@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-07-02
+
+### Added
+
+- 新增 `cfo-finops-perspective` project skill，讓後續工作能以 CFO 視角設計 FinOps demo、更新 docs，並從 demo 結果回寫反思。
+- 新增 `docs/cfo_finops_operating_view.md`，記錄 CFO 對 FinOps 成熟度、財務風險指標與 demo004 實作結果的觀點回饋。
+- 新增 `demo/demo004/`，實作 CFO Cloud Financial Risk Score demo，包含專案預算表、財務風險物化視圖、Top 10 風險排序與風險來源彙總查詢。
+- 新增 `docs/cfo_financial_risk_metric.md`，定義 CFO 視角的 Cloud Financial Risk Score，作為下一個財務風險量化 demo 標的。
+
+### Changed
+
+- 補充 `demo/demo004/README.md` 的實際 PostgreSQL 驗證結果、CFO Top 10 高風險專案與風險來源彙總。
+
 本檔記錄這個 FOCUS PostgreSQL 標準資料範例專案的主要變更。之後修改 schema、seed data、query、工具、文件或 skill 時，都要同步更新本檔。
 
 ## 2026-07-01
