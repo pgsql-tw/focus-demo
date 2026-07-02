@@ -582,6 +582,50 @@ ORDER BY
     average_risk_score DESC;
 ```
 
+## 實際執行結果
+
+以下結果來自本機 PostgreSQL 驗證輸出，原始 logs 保存在 ignored 的 `outputs/demo004/` 目錄中。
+
+### 驗證摘要
+
+| 驗證項目 | 結果 |
+|---|---:|
+| `focus.cost_usage` 欄位數 | 107 |
+| `focus.cost_usage` 資料列 | 493,020 |
+| `business.project_budgets` 資料列 | 90 |
+| `business.mv_project_financial_risk_score` 資料列 | 90 |
+
+### CFO Top 10 高風險專案
+
+| project_id | project_name | business_unit | score_as_of_date | monthly_budget | month_to_date_effective_cost | current_month_run_rate | cloud_financial_risk_score | risk_level | primary_risk_driver |
+|---|---|---|---|---:|---:|---:|---:|---|---|
+| `gcp-prj-17` | GCP Project 17 | research | 2026-12-31 | 930.63 | 1,883.76 | 1,883.76 | 80.10 | Critical | BudgetRunRateRisk |
+| `gcp-prj-05` | GCP Project 05 | research | 2026-12-31 | 900.88 | 1,823.53 | 1,823.53 | 80.10 | Critical | BudgetRunRateRisk |
+| `gcp-prj-11` | GCP Project 11 | research | 2026-12-31 | 841.37 | 1,703.08 | 1,703.08 | 80.10 | Critical | BudgetRunRateRisk |
+| `gcp-prj-23` | GCP Project 23 | research | 2026-12-31 | 374.58 | 758.22 | 758.22 | 80.10 | Critical | BudgetRunRateRisk |
+| `gcp-prj-29` | GCP Project 29 | research | 2026-12-31 | 250.00 | 349.92 | 349.92 | 80.10 | Critical | BudgetRunRateRisk |
+| `az-prj-17` | Azure Project 17 | research | 2026-12-31 | 3,533.48 | 7,152.35 | 7,152.35 | 78.15 | Critical | BudgetRunRateRisk |
+| `az-prj-05` | Azure Project 05 | research | 2026-12-31 | 3,420.51 | 6,923.67 | 6,923.67 | 78.15 | Critical | BudgetRunRateRisk |
+| `az-prj-11` | Azure Project 11 | research | 2026-12-31 | 3,194.56 | 6,466.33 | 6,466.33 | 78.15 | Critical | BudgetRunRateRisk |
+| `az-prj-23` | Azure Project 23 | research | 2026-12-31 | 1,422.24 | 2,878.85 | 2,878.85 | 78.15 | Critical | BudgetRunRateRisk |
+| `az-prj-29` | Azure Project 29 | research | 2026-12-31 | 656.36 | 1,328.58 | 1,328.58 | 78.15 | Critical | BudgetRunRateRisk |
+
+### 風險來源彙總
+
+| risk_level | primary_risk_driver | project_count | average_risk_score | month_to_date_effective_cost | current_month_run_rate | monthly_budget |
+|---|---|---:|---:|---:|---:|---:|
+| Critical | BudgetRunRateRisk | 15 | 78.68 | 40,705.70 | 40,705.70 | 20,186.98 |
+| High | BudgetRunRateRisk | 12 | 54.49 | 14,664.03 | 14,664.03 | 12,171.74 |
+| Watch | BudgetRunRateRisk | 15 | 38.32 | 27,615.41 | 27,615.41 | 20,934.76 |
+| Watch | ForecastVolatilityRisk | 30 | 36.89 | 37,689.38 | 37,689.38 | 38,467.78 |
+| Low | ForecastVolatilityRisk | 2 | 23.86 | 387.43 | 387.43 | 500.00 |
+| Low | BudgetRunRateRisk | 14 | 10.46 | 18,539.23 | 18,539.23 | 20,112.29 |
+| Low | CommitmentCoverageRisk | 2 | 7.08 | 352.91 | 352.91 | 500.00 |
+
+### CFO 解讀
+
+這次結果顯示 `BudgetRunRateRisk` 是 Critical 與 High 專案的主要風險來源，代表第一版 CFRS 很清楚地抓到「照目前速度會超出預算」的 CFO 問題。這適合作為財務風險升級 demo，但也提醒後續版本應加入更強的 volatility、concentration 與 commitment 情境，避免整體分數長期被 run rate 單一因素主導。
+
 ## 輸出欄位
 
 | 欄位 | CFO 解讀 |
