@@ -1,0 +1,4 @@
+interface:
+  display_name: "CFO FinOps Perspective"
+  short_description: "Apply CFO judgment to FinOps demos and documentation."
+  default_prompt: "Use $cfo-finops-perspective to review this project, update docs, and reflect on demo evidence."
