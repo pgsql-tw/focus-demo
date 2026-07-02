@@ -42,10 +42,10 @@ AI bill shock 不一定只來自模型 API 或 GPU compute。更常見的隱性�
 
 ## Demo005 想法
 
-建議下一個 demo 命名為：
+已實作的下一個 demo 命名為：
 
 ```text
-demo005_ai_financial_control_score
+demo005: AI Financial Control Score
 ```
 
 它要回答的 CFO 問題是：
@@ -59,6 +59,24 @@ demo005_ai_financial_control_score
 - 產出 AI financial control score，並標示主要風險來源。
 - 對沒有 owner、沒有 value evidence、或 token 成長異常的 project 給予較高治理風險。
 - 讓 CFO 可以排序 Top 10 高風險 AI project，而不是只看最高成本 project。
+
+## demo005 實作回饋
+
+demo005 已在 `demo/demo005/` 實作。它新增 `business.ai_workflow_controls` 與 `business.ai_workflow_daily_usage`，把 AI workflow 的 token 預算、owner、guardrail、價值證據、每日 token 與 agent run 補充在 `business` schema，再與 `focus.cost_usage` 的 FOCUS 成本資料合併成 `business.mv_ai_financial_control_score`。
+
+驗證結果：
+
+| 驗證項目 | 結果 |
+|---|---:|
+| `focus.cost_usage` 欄位數 | 107 |
+| `focus.cost_usage` 資料列 | 493,020 |
+| `business.ai_workflow_controls` 資料列 | 30 |
+| `business.ai_workflow_daily_usage` 資料列 | 5,400 |
+| `business.mv_ai_financial_control_score` 資料列 | 30 |
+
+Top 10 AI 治理風險中有 7 個 workflow 達到 High，最高分是 `aws-prj-05` 的 `66.20`。主要治理缺口大多是 `TokenConsumptionRisk`，這證明 token demand 的成長是 CFO 最容易看到的 AI 財務風險。不過 `SecondaryCloudCostRisk` 也出現在 Watch workflow，提醒後續 demo 應更強化資料庫、儲存、分析與資料搬移等次級雲成本情境。
+
+這版結果也顯示 owner 與 guardrail 缺口尚未主導 Top 10。下一版如果要讓治理責任更突出，應增加沒有 owner、缺少 guardrail 或缺少業務價值證據的高用量情境，避免 AI Financial Control Score 長期變成 token budget variance 分析。
 
 ## 與 FOCUS 資料的連結
 
